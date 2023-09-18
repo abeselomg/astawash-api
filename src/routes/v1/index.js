@@ -2,6 +2,8 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const licenseRoute = require('./driverLicense.route');
+const carRoute= require('./car.route')
+const carSettingRoute= require('./carSetting.route')
 
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
@@ -21,6 +23,15 @@ const defaultRoutes = [
     path: '/driver_license',
     route: licenseRoute,
   },
+  {
+    path: '/car',
+    route: carRoute,
+  },
+  {
+    path:'/car_setting',
+    route:carSettingRoute
+  }
+  
 ];
 
 const devRoutes = [
