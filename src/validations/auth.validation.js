@@ -4,14 +4,14 @@ const { password, phoneNumber } = require('./custom.validation');
 const register = {
   body: Joi.object().keys({
     phone: Joi.string().required().custom(phoneNumber),
-    password: Joi.number().required().custom(password),
+    password: Joi.string().required().custom(password),
   }),
 };
 
 const login = {
   body: Joi.object().keys({
     phone: Joi.string().required(),
-    password: Joi.number().required(),
+    password: Joi.string().required(),
   }),
 };
 
