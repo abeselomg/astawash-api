@@ -16,6 +16,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Car>}
  */
 const createCar = async (carBody) => {
+  console.log(carBody)
   const user = await userServices.getUserById(carBody.userId);
   const carRegion = await carRegionServices.getCarRegionById(carBody.regionId);
   const carCode = await CarCodeService.getCarCodeById(carBody.codeId);

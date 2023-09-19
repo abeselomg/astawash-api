@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, userService, tokenService, emailService } = require('../services');
+const { authService, userService, tokenService, emailService , driverLicenseService, CarService} = require('../services');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -47,6 +47,18 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+
+const setUpProfile = catchAsync(async (req, res) => {
+  const user = await userService.updateUserById(req.body.userId, req.body.personal);
+  console.log(req.body.userId)
+
+  const driverLicense = await driverLicenseService.createDriverLicense({ ...req.body.license_details,userId:req.body.userId });
+  const car = await CarService.createCar({ ...req.body.car_registration, userId:req.body.userId });
+  res.status(httpStatus.CREATED).send({ user, driverLicense, car });
+});
+
+
+
 module.exports = {
   register,
   login,
@@ -56,4 +68,5 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+  setUpProfile,
 };
