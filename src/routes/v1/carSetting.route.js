@@ -23,5 +23,9 @@ router
   .post(auth('personal'),  carSettingsController.createCarCode)
   .get(auth('personal'), carSettingsController.getCarCodes);
 
+  router
+  .route('/license_level')
+  .post(auth('personal'),  carSettingsController.createLicenseLevel)
+  .get(auth('personal'), carSettingsController.getLicenseLevel);
 
 module.exports = router;

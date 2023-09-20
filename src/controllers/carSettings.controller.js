@@ -3,7 +3,14 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { CarRegionService, CarCodeService, CarBrandService } = require('../services');
+const { CarRegionService, CarCodeService, CarBrandService,LicenseLevelService } = require('../services');
+
+const createLicenseLevel = catchAsync(async (req, res) => {
+  const licenseLevel = await LicenseLevelService.createLicenseLevel(req.body);
+  res.status(httpStatus.CREATED).send(licenseLevel);
+});
+
+
 
 const createCarRegion = catchAsync(async (req, res) => {
   const carRegion = await CarRegionService.createCarRegion(req.body);
@@ -40,6 +47,14 @@ const getCarCodes = catchAsync(async (req, res) => {
     const result = await CarBrandService.queryAllCarBrand(filter, options);
     res.send(result);
   });
+  const getLicenseLevel = catchAsync(async (req, res) => {
+    const filter = pick(req.query, []);
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+    const result = await LicenseLevelService.queryAllLicenseLevel(filter, options);
+    res.send(result);
+  });
+  
+
 
 module.exports = {
     createCarRegion,
@@ -47,5 +62,7 @@ module.exports = {
     createCarBrand,
     getCarRegions,
     getCarCodes,
-    getCarBrands
+    getCarBrands,
+    createLicenseLevel,
+getLicenseLevel
 };
