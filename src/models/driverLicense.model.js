@@ -5,9 +5,9 @@ const { toJSON, paginate } = require('./plugins');
 const driverLicenseSchema = mongoose.Schema(
   {
     license_level: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'LicenseLevel',
       required: true,
-      trim: true,
     },
     issue_date: {
         type: Date,

@@ -4,6 +4,8 @@
 const httpStatus = require('http-status');
 const { DriverLicense } = require('../models');
 const userServices = require('./user.service');
+const LicenseLevelService = require('./licenseLevel.service');
+
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -13,7 +15,9 @@ const ApiError = require('../utils/ApiError');
  */
 const createDriverLicense = async (licenseBody) => {
   const user = await userServices.getUserById(licenseBody.userId);
-  return DriverLicense.create({ ...licenseBody, user: user });
+  const license_level = await LicenseLevelService.getLicenseLevelById(licenseBody.license_level);
+
+  return DriverLicense.create({ ...licenseBody, user: user,license_level:license_level });
 };
 
 /**
