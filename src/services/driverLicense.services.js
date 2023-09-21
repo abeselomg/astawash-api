@@ -49,7 +49,7 @@ const getDriverLicenseById = async (id) => {
  * @returns {Promise<DriverLicense>}
  */
 const getDriverLicenseByUser = async (userId) => {
-  return DriverLicense.find({ user:userId }).populate('user');
+  return DriverLicense.find({ user:userId }).populate('user').populate('license_level');
 };
 
 /**
