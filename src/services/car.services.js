@@ -64,7 +64,7 @@ const getCarByUser = async (userId) => {
  * @returns {Promise<Car>}
  */
 const updateCarById = async (carId, updateBody) => {
-  const car = await getcarById(driverLicenseId);
+  const car = await getcarById(carId);
   if (!car) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Car details not found');
   }

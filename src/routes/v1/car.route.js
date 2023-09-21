@@ -16,7 +16,7 @@ router
   .route('/user/:userId')
   .get(auth('personal'), validate(carValidation.getCarByUser), carController.getCarsByUserId);
 router
-  .route('/:licenseId')
+  .route('/:carId')
   .patch(auth('personal'), validate(carValidation.updateCar), carController.updateCar)
   .delete(auth('manageUsers'), validate(carValidation.deleteCar), carController.deleteCar);
 
