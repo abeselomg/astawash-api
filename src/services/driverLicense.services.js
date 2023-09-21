@@ -63,8 +63,13 @@ const updateDriverLicenseById = async (driverLicenseId, updateBody) => {
   if (!driverLicense) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Driver license id not found');
   }
+  let license_level = driverLicense['license_level'];
 
-  Object.assign(driverLicense, updateBody);
+  if (updateBody.license_level) {
+     license_level = await LicenseLevelService.getLicenseLevelById(updateBody.license_level);
+  }
+
+  Object.assign(driverLicense, {...updateBody,license_level:license_level});
   await driverLicense.save();
   return driverLicense;
 };
