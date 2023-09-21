@@ -16,7 +16,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Car>}
  */
 const createCar = async (carBody) => {
-  console.log(carBody)
+  console.log(carBody);
   const user = await userServices.getUserById(carBody.userId);
   const carRegion = await carRegionServices.getCarRegionById(carBody.regionId);
   const carCode = await CarCodeService.getCarCodeById(carBody.codeId);
@@ -54,9 +54,9 @@ const getcarById = async (id) => {
  * @returns {Promise<Car>}
  */
 const getCarByUser = async (userId) => {
-  return Car.find({ user: userId }).populate(['user','region','code','car_brand']);
+  return Car.find({ user: userId }).populate(['user', 'region', 'code', 'car_brand']);
 };
- 
+
 /**
  * Update cars by id
  * @param {ObjectId} carId
@@ -68,8 +68,23 @@ const updateCarById = async (carId, updateBody) => {
   if (!car) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Car details not found');
   }
+  let carRegion = car['region'];
+  let carCode = car['code'];
+  let carBrand = car['car_brand'];
+  if (updateBody.regionId) {
+    carRegion = await carRegionServices.getCarRegionById(updateBody.regionId);
+  }
 
-  Object.assign(car, updateBody);
+  if (updateBody.codeId) {
+    carCode = await CarCodeService.getCarCodeById(updateBody.codeId);;
+  }
+
+  if (updateBody.carBrandId) {
+    carBrand = await CarBrandService.getCarBrandById(updateBody.carBrandId);;
+  }
+
+
+  Object.assign(car, {...updateBody,region: carRegion, code: carCode, car_brand: carBrand});
   await car.save();
   return car;
 };

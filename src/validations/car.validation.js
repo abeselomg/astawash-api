@@ -50,6 +50,9 @@ const updateCar = {
         full_insurance_expiration_date: Joi.date().min('now'),
         car_cc: Joi.number().integer(),
         manufacturing_year: Joi.number().integer(),
+        regionId: Joi.string().custom(objectId),
+        codeId: Joi.string().custom(objectId),
+        carBrandId: Joi.string().custom(objectId),
     })
     .min(1),
 };
