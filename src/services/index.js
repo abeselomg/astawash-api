@@ -8,6 +8,7 @@ module.exports.CarRegionService = require('./carRegion.services');
 module.exports.CarCodeService = require('./carCode.services');
 module.exports.CarBrandService = require('./carBrand.services');
 module.exports.LicenseLevelService = require('./licenseLevel.service');
+module.exports.reminderService = require('./reminder.service');
 
 
 
