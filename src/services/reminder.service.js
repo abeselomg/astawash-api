@@ -54,6 +54,14 @@ const getReminderByUserAndType = async (userId,type) => {
     return Reminder.find({ user:userId ,type:type}).populate('user');
   };
 
+
+  const getReminderByUserAndFamily = async (userId) => {
+    console.log('hereeeeee')
+    return Reminder.find({ user:userId , type:'birthday'||'anniversary'}).populate('user');
+// find({ user:userId ,type:{ $in: ['birthday', 'anniversary'] }}).populate('user');
+
+  };
+
 /**
  * Update driver_licenses by id
  * @param {ObjectId} reminderId
@@ -93,5 +101,6 @@ module.exports = {
   getReminderByUser,
   updateReminderById,
   deleteReminderById,
-  getReminderByUserAndType
+  getReminderByUserAndType,
+  getReminderByUserAndFamily
 };

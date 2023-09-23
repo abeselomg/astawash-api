@@ -17,6 +17,9 @@ const getCars= catchAsync(async (req, res) => {
   res.send(result);
 });
 
+
+
+
 const getCarsByUserId = catchAsync(async (req, res) => {
   const cars = await CarService.getCarByUser(req.params.userId);
   if (!cars) {
