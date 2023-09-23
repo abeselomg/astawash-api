@@ -2,7 +2,7 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable prettier/prettier */
 const httpStatus = require('http-status');
-const { Reminder } = require('../models');
+const { Reminder,Car,DriverLicense } = require('../models');
 const userServices = require('./user.service');
 
 const ApiError = require('../utils/ApiError');
@@ -59,8 +59,23 @@ const getReminderByUserAndType = async (userId,type) => {
     console.log('hereeeeee')
     return Reminder.find({ user:userId , type:'birthday'||'anniversary'}).populate('user');
 // find({ user:userId ,type:{ $in: ['birthday', 'anniversary'] }}).populate('user');
-
   };
+
+  const getLatestReminderServiceByUser = async (userId) => {
+    let allReminders={};
+    allReminders["birthday"]=await Reminder.findOne({ user:userId,type:'birthday'},'date').sort({date:-1})
+    allReminders["anniversary"]=await Reminder.findOne({ user:userId,type:'anniversary'},'date').sort({date:-1})
+    allReminders["third_party_expiration_date"]=await Car.findOne({ user:userId},'third_party_expiration_date').sort({third_party_expiration_date:-1})
+    allReminders["bolo_expiration_date"]=await Car.findOne({ user:userId},'bolo_expiration_date').sort({bolo_expiration_date:-1})
+    allReminders["full_insurance_expiration_date"]=await Car.findOne({ user:userId},'full_insurance_expiration_date').sort({full_insurance_expiration_date:-1})
+    allReminders["expiration_date"]=await DriverLicense.findOne({ user:userId},'expiration_date').sort({expiration_date:-1})
+
+    
+
+    return allReminders
+// find({ user:userId ,type:{ $in: ['birthday', 'anniversary'] }}).populate('user');
+  };
+
 
 /**
  * Update driver_licenses by id
@@ -102,5 +117,6 @@ module.exports = {
   updateReminderById,
   deleteReminderById,
   getReminderByUserAndType,
-  getReminderByUserAndFamily
+  getReminderByUserAndFamily,
+  getLatestReminderServiceByUser
 };

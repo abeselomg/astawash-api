@@ -18,6 +18,12 @@ router
   .get(auth('personal'),  reminderController.getAllAvailableReminderServiceByUserId);
 
 
+  router
+  .route('/user/:userId/latest')
+  .get(auth('personal'),  reminderController.getLatestReminderServiceByUser);
+
+
+  
 
 router
   .route('/user/:userId')

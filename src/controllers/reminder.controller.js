@@ -40,13 +40,11 @@ const getAllAvailableReminderServiceByUserId = catchAsync(async (req, res) => {
 
   let carMapped=[...cars].map((e)=>{
     return {
-      "name":e.car_brand.name + " " + e.plate_number,
+      "name":e.car_brand.name + " - " + e.plate_number,
       "type":'Car Reminder',
       "date":e.third_party_expiration_date
     }
   })
-
-
   res.send([...reminderMapped,...licenseMapped,...carMapped]);
 });
 
@@ -70,8 +68,15 @@ const getReminderServiceByUserIdAndType = catchAsync(async (req, res) => {
 
 
 const getReminderServiceByUserIdAndFamily = catchAsync(async (req, res) => {
-
   const reminder = await reminderService.getReminderByUserAndFamily(req.params.userId);
+  if (!reminder) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Reminder not found');
+  }
+  res.send(reminder);
+});
+
+const getLatestReminderServiceByUser = catchAsync(async (req, res) => {
+  const reminder = await reminderService.getLatestReminderServiceByUser(req.params.userId);
   if (!reminder) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Reminder not found');
   }
@@ -99,5 +104,6 @@ module.exports = {
   deleteReminder,
   getReminderServiceByUserIdAndType,
   getReminderServiceByUserIdAndFamily,
-  getAllAvailableReminderServiceByUserId
+  getAllAvailableReminderServiceByUserId,
+  getLatestReminderServiceByUser
 };
