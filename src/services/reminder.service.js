@@ -84,7 +84,7 @@ const getReminderByUserAndType = async (userId,type) => {
     allReminders["third_party_expiration_date"]=await Car.find({ user:userId,third_party_expiration_date:futureDate},['third_party_expiration_date','plate_number','car_brand']).populate('car_brand')
     allReminders["bolo_expiration_date"]=await Car.find({ user:userId,bolo_expiration_date:futureDate},['bolo_expiration_date','plate_number','car_brand']).populate('car_brand')
     allReminders["full_insurance_expiration_date"]=await Car.find({ user:userId,full_insurance_expiration_date: futureDate},['full_insurance_expiration_date','plate_number','car_brand']).populate('car_brand')
-    allReminders["expiration_date"]=await DriverLicense.find({ user:userId, expiration_date:futureDate},'expiration_date').sort({expiration_date:-1})
+    allReminders["expiration_date"]=await DriverLicense.find({ user:userId, expiration_date:futureDate},['expiration_date','license_level']).populate('license_level').sort({expiration_date:-1})
 
     return allReminders
   };
