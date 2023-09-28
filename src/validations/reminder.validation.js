@@ -7,6 +7,7 @@ const createReminder = {
     name: Joi.string().required(),
     date: Joi.date().min('now'),
     type: Joi.string().required(),
+    description: Joi.string(),
     userId: Joi.string().required().custom(objectId),
   }),
 };
@@ -45,6 +46,7 @@ const updateReminder = {
   body: Joi.object()
     .keys({
       name: Joi.string(),
+      description: Joi.string(),
       date: Joi.date().min('now'),
       type: Joi.string(),
     })
@@ -64,5 +66,5 @@ module.exports = {
   getDriverReminderByUser,
   updateReminder,
   deleteReminder,
-  getDriverReminderByUserAndType
+  getDriverReminderByUserAndType,
 };

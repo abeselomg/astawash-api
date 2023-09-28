@@ -83,6 +83,16 @@ const getLatestReminderServiceByUser = catchAsync(async (req, res) => {
   res.send(reminder);
 });
 
+const getRemindersNotificationByUser = catchAsync(async (req, res) => {
+  const reminder = await reminderService.getRemindersNotificationByUser(req.params.userId);
+  if (!reminder) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Reminder not found');
+  }
+  res.send(reminder);
+});
+
+
+
 
 
 
@@ -105,5 +115,6 @@ module.exports = {
   getReminderServiceByUserIdAndType,
   getReminderServiceByUserIdAndFamily,
   getAllAvailableReminderServiceByUserId,
-  getLatestReminderServiceByUser
+  getLatestReminderServiceByUser,
+  getRemindersNotificationByUser
 };

@@ -22,7 +22,6 @@ const carSchema = mongoose.Schema(
     plate_number: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
 

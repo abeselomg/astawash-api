@@ -17,6 +17,12 @@ const remindersSchema = mongoose.Schema(
       enum: ['birthday', 'anniversary', 'other'],
       required: true,
     },
+
+    description: {
+      type: String,
+      required: false,
+      default:''
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
