@@ -78,12 +78,12 @@ const getReminderByUserAndType = async (userId,type) => {
 
   const getRemindersNotificationByUser = async (userId) => {
     let allReminders={};
-    let futureDate=moment().add(15,"days").format("YYYY-MM-DD")
-    allReminders["birthday"]=await Reminder.find({ user:userId,type:'birthday',date:futureDate},'date').sort({date:-1})
-    allReminders["anniversary"]=await Reminder.find({ user:userId,type:'anniversary',date:futureDate},'date').sort({date:-1})
-    allReminders["third_party_expiration_date"]=await Car.find({ user:userId,third_party_expiration_date:futureDate},'third_party_expiration_date').sort({third_party_expiration_date:-1})
-    allReminders["bolo_expiration_date"]=await Car.find({ user:userId,bolo_expiration_date:futureDate},'bolo_expiration_date').sort({bolo_expiration_date:-1})
-    allReminders["full_insurance_expiration_date"]=await Car.find({ user:userId,full_insurance_expiration_date: futureDate},'full_insurance_expiration_date').sort({full_insurance_expiration_date:-1})
+    let futureDate=moment().add(14,"days").format("YYYY-MM-DD")
+    allReminders["birthday"]=await Reminder.find({ user:userId,type:'birthday',date:moment().format("YYYY-MM-DD")},['name','date','description']).sort({date:-1})
+    allReminders["anniversary"]=await Reminder.find({ user:userId,type:'anniversary',date:moment().format("YYYY-MM-DD")},['name','date','description']).sort({date:-1})
+    allReminders["third_party_expiration_date"]=await Car.find({ user:userId,third_party_expiration_date:futureDate},['third_party_expiration_date','plate_number','car_brand']).populate('car_brand')
+    allReminders["bolo_expiration_date"]=await Car.find({ user:userId,bolo_expiration_date:futureDate},['bolo_expiration_date','plate_number','car_brand']).populate('car_brand')
+    allReminders["full_insurance_expiration_date"]=await Car.find({ user:userId,full_insurance_expiration_date: futureDate},['full_insurance_expiration_date','plate_number','car_brand']).populate('car_brand')
     allReminders["expiration_date"]=await DriverLicense.find({ user:userId, expiration_date:futureDate},'expiration_date').sort({expiration_date:-1})
 
     return allReminders
