@@ -33,7 +33,7 @@ const getAllAvailableReminderServiceByUserId = catchAsync(async (req, res) => {
   let licenseMapped=[...license].map((e)=>{
     return {
       "name":e.license_level.name,
-      "type":'Driver Licence',
+      "type":'driver_licence',
       "date":e.expiration_date
     }
   })
@@ -41,7 +41,7 @@ const getAllAvailableReminderServiceByUserId = catchAsync(async (req, res) => {
   let carMapped=[...cars].map((e)=>{
     return {
       "name":e.car_brand.name + " - " + e.plate_number,
-      "type":'Car Reminder',
+      "type":'car_reminder',
       "date":e.third_party_expiration_date
     }
   })
