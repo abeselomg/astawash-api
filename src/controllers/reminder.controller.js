@@ -26,7 +26,7 @@ const getAllAvailableReminderServiceByUserId = catchAsync(async (req, res) => {
     return {
       "name":e.name,
       "type":e.type,
-      "date":e.date
+      "date":[e.date]
     }
   })
 
@@ -34,7 +34,7 @@ const getAllAvailableReminderServiceByUserId = catchAsync(async (req, res) => {
     return {
       "name":e.license_level.name,
       "type":'driver_licence',
-      "date":e.expiration_date
+      "date":[e.expiration_date]
     }
   })
 
@@ -42,7 +42,9 @@ const getAllAvailableReminderServiceByUserId = catchAsync(async (req, res) => {
     return {
       "name":e.car_brand.name + " - " + e.plate_number,
       "type":'car_reminder',
-      "date":e.third_party_expiration_date
+      "date":[e.third_party_expiration_date,
+        e.bolo_expiration_date,
+        e.full_insurance_expiration_date]
     }
   })
   res.send([...reminderMapped,...licenseMapped,...carMapped]);
