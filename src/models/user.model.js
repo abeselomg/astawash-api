@@ -7,7 +7,18 @@ const phoneValidator = require('../utils/validatePhone');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+
+    first_name: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    middle_name: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    last_name: {
       type: String,
       required: false,
       trim: true,
