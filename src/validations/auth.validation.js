@@ -52,7 +52,9 @@ const setUpProfile = {
   body: Joi.object().keys({
     userId: Joi.string().required().custom(objectId),
     personal: {
-      name: Joi.string().required(),
+      first_name: Joi.string().required(),
+      middle_name: Joi.string().required(),
+      last_name: Joi.string().required(),
       gender: Joi.string().required().valid('male', 'female'),
       date_of_birth: Joi.date().required(),
     },
