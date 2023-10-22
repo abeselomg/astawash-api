@@ -31,7 +31,6 @@ services:
       - 80:80
     volumes:
       - ./ngnix:/etc/nginx/conf.d/
-      - static_files:/home/app/staticfiles
 
 volumes:
   dbdata:
