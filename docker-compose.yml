@@ -1,17 +1,17 @@
 version: '3'
 
 services:
-  node-app:
+  astawash-app:
     build: .
-    image: node-app
+    image: astawash-app
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
-    ports:
-      - '3000:3000'
+    expose:
+      - 3000
     depends_on:
       - mongodb
     volumes:
-      - .:/usr/src/node-app
+      - .:/usr/src/astawash-app
     networks:
       - node-network
 
@@ -23,6 +23,15 @@ services:
       - dbdata:/data/db
     networks:
       - node-network
+
+  nginx:
+    build:
+      context: ./ngnix
+    ports:
+      - 80:80
+    volumes:
+      - ./ngnix:/etc/nginx/conf.d/
+      - static_files:/home/app/staticfiles
 
 volumes:
   dbdata:
