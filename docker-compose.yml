@@ -6,6 +6,8 @@ services:
     image: astawash-app
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
+    env_file:
+      - web-variables.env
     expose:
       - 3000
     depends_on:
