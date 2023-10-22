@@ -7,7 +7,7 @@ services:
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
     env_file:
-      - web-variables.env
+      - astawash.env
     expose:
       - 3000
     depends_on:
