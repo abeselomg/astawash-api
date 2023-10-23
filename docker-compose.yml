@@ -21,6 +21,8 @@ services:
     image: mongo:4.2.1-bionic
     ports:
       - '27017:27017'
+    depends_on:
+      - nginx
     volumes:
       - dbdata:/data/db
     networks:
