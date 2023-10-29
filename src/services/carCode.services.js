@@ -36,9 +36,17 @@ const queryAllCarCode = async (filter, options) => {
 const getCarCodeById = async (id) => {
   return CarCode.findById(id);
 };
-
+const deleteCarCodeById = async (id) => {
+  const carCode = await getCarCodeById(id);
+  if (!carCode) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'carCode not found');
+  }
+  await carCode.remove();
+  return carCode;
+};
 module.exports = {
   createCarCode,
   queryAllCarCode,
   getCarCodeById,
+  deleteCarCodeById
 };

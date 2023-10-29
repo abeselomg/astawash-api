@@ -54,7 +54,10 @@ const getCarCodes = catchAsync(async (req, res) => {
     res.send(result);
   });
   
-
+  const deleteCarCode = catchAsync(async (req, res) => {
+    const result = await CarCodeService.deleteCarCodeById(req.params.carCodeId);
+    res.send(result);
+  });
 
 module.exports = {
     createCarRegion,
@@ -64,5 +67,5 @@ module.exports = {
     getCarCodes,
     getCarBrands,
     createLicenseLevel,
-getLicenseLevel
+getLicenseLevel,deleteCarCode
 };
