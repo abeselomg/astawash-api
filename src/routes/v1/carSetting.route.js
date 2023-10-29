@@ -21,9 +21,10 @@ router
   router
   .route('/car_code')
   .post(auth('personal'),  carSettingsController.createCarCode)
-  .delete(auth('personal'),  carSettingsController.deleteCarCode)
   .get(auth('personal'), carSettingsController.getCarCodes);
-
+  router
+  .route('/car_code/:carCodeId')
+  .delete(auth('personal'),  carSettingsController.deleteCarCode)
   router
   .route('/license_level')
   .post(auth('personal'),  carSettingsController.createLicenseLevel)
