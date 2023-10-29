@@ -5,7 +5,7 @@ const { toJSON, paginate } = require('./plugins');
 const carCodeSchema = mongoose.Schema(
   {
     code: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },
