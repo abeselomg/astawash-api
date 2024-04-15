@@ -7,7 +7,6 @@ const phoneValidator = require('../utils/validatePhone');
 
 const userSchema = mongoose.Schema(
   {
-
     first_name: {
       type: String,
       required: false,
@@ -23,17 +22,12 @@ const userSchema = mongoose.Schema(
       required: false,
       trim: true,
     },
-    phone: {
+    username: {
       type: String,
       required: true,
       unique: true,
       trim: true,
       lowercase: true,
-      validate(value) {
-        if (!phoneValidator(value)) {
-          throw new Error('Invalid phone');
-        }
-      },
     },
     password: {
       type: String,
@@ -66,6 +60,12 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    organaization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organaization',
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -82,8 +82,8 @@ userSchema.plugin(paginate);
  * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
  */
-userSchema.statics.isPhoneTaken = async function (phone, excludeUserId) {
-  const user = await this.findOne({ phone, _id: { $ne: excludeUserId } });
+userSchema.statics.isUsernameTaken = async function (username, excludeUserId) {
+  const user = await this.findOne({ username, _id: { $ne: excludeUserId } });
   return !!user;
 };
 

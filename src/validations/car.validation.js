@@ -13,8 +13,8 @@ const createCar = {
     full_insurance_expiration_date: Joi.date().min('now'),
     car_cc: Joi.number().integer(),
     manufacturing_year: Joi.number().integer(),
-    userId: Joi.string().required().custom(objectId),
-
+    userId: Joi.string().custom(objectId),
+    organaization: Joi.string().custom(objectId),
   }),
 };
 
@@ -33,10 +33,15 @@ const getCar = {
 };
 
 const getCarByUser = {
-    params: Joi.object().keys({
-      userId: Joi.string().custom(objectId),
-    }),
-  };
+  params: Joi.object().keys({
+    userId: Joi.string().custom(objectId),
+  }),
+};
+const getCarByOrg = {
+  params: Joi.object().keys({
+    orgId: Joi.string().custom(objectId),
+  }),
+};
 
 const updateCar = {
   params: Joi.object().keys({
@@ -44,15 +49,15 @@ const updateCar = {
   }),
   body: Joi.object()
     .keys({
-        plate_number: Joi.string(),
-        third_party_expiration_date: Joi.date().min('now'),
-        bolo_expiration_date: Joi.date().min('now'),
-        full_insurance_expiration_date: Joi.date().min('now'),
-        car_cc: Joi.number().integer(),
-        manufacturing_year: Joi.number().integer(),
-        regionId: Joi.string().custom(objectId),
-        codeId: Joi.string().custom(objectId),
-        carBrandId: Joi.string().custom(objectId),
+      plate_number: Joi.string(),
+      third_party_expiration_date: Joi.date().min('now'),
+      bolo_expiration_date: Joi.date().min('now'),
+      full_insurance_expiration_date: Joi.date().min('now'),
+      car_cc: Joi.number().integer(),
+      manufacturing_year: Joi.number().integer(),
+      regionId: Joi.string().custom(objectId),
+      codeId: Joi.string().custom(objectId),
+      carBrandId: Joi.string().custom(objectId),
     })
     .min(1),
 };
@@ -70,4 +75,5 @@ module.exports = {
   getCarByUser,
   updateCar,
   deleteCar,
+  getCarByOrg
 };

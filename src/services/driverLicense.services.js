@@ -4,6 +4,7 @@
 const httpStatus = require('http-status');
 const { DriverLicense } = require('../models');
 const userServices = require('./user.service');
+const orgUserServices = require('./organizationUser.service');
 const LicenseLevelService = require('./licenseLevel.service');
 
 const ApiError = require('../utils/ApiError');
@@ -15,9 +16,16 @@ const ApiError = require('../utils/ApiError');
  */
 const createDriverLicense = async (licenseBody) => {
   const user = await userServices.getUserById(licenseBody.userId);
+  const orguser = await orgUserServices.getOrgUserById(licenseBody.organaization_user);
+
   const license_level = await LicenseLevelService.getLicenseLevelById(licenseBody.license_level);
 
-  return DriverLicense.create({ ...licenseBody, user: user,license_level:license_level });
+  return DriverLicense.create({
+    ...licenseBody,
+    user: user,
+    license_level: license_level,
+    organaization_user: orguser,
+  });
 };
 
 /**
@@ -49,7 +57,11 @@ const getDriverLicenseById = async (id) => {
  * @returns {Promise<DriverLicense>}
  */
 const getDriverLicenseByUser = async (userId) => {
-  return DriverLicense.find({ user:userId }).populate('user').populate('license_level');
+  return DriverLicense.find({ user: userId }).populate('user').populate('license_level');
+};
+
+const getDriverLicenseByOrg = async (orgId) => {
+  return DriverLicense.find({ organaization: orgId }).populate(['organaization', 'license_level', 'organaization_user']);
 };
 
 /**
@@ -66,10 +78,10 @@ const updateDriverLicenseById = async (driverLicenseId, updateBody) => {
   let license_level = driverLicense['license_level'];
 
   if (updateBody.license_level) {
-     license_level = await LicenseLevelService.getLicenseLevelById(updateBody.license_level);
+    license_level = await LicenseLevelService.getLicenseLevelById(updateBody.license_level);
   }
 
-  Object.assign(driverLicense, {...updateBody,license_level:license_level});
+  Object.assign(driverLicense, { ...updateBody, license_level: license_level });
   await driverLicense.save();
   return driverLicense;
 };
@@ -95,4 +107,5 @@ module.exports = {
   getDriverLicenseByUser,
   updateDriverLicenseById,
   deleteDriverLicenseById,
+  getDriverLicenseByOrg,
 };

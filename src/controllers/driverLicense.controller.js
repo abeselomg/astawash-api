@@ -25,6 +25,14 @@ const getDriverLicenseByUserId = catchAsync(async (req, res) => {
   res.send(driverLicense);
 });
 
+const getDriverLicenseByOrgId = catchAsync(async (req, res) => {
+  const cars = await driverLicenseService.getDriverLicenseByOrg(req.params.orgId);
+  if (!cars) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No Driver License found under this Organization');
+  }
+  res.send(cars);
+});
+
 const updateLicense = catchAsync(async (req, res) => {
   const driverLicense = await driverLicenseService.updateDriverLicenseById(req.params.licenseId, req.body);
   res.send(driverLicense);
@@ -41,4 +49,5 @@ module.exports = {
   getDriverLicenseByUserId,
   updateLicense,
   deleteLicense,
+  getDriverLicenseByOrgId
 };

@@ -8,8 +8,11 @@ const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
-router.post('/set-up-profile', validate(authValidation.setUpProfile), authController.setUpProfile);
+router.post('/org-login', validate(authValidation.orgLogin), authController.loginOrgUser);
+router.post('/org-register', validate(authValidation.orgUserRegister), authController.registerOrgUser);
 
+
+router.post('/set-up-profile', validate(authValidation.setUpProfile), authController.setUpProfile);
 
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);

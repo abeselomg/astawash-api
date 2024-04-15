@@ -48,11 +48,18 @@ const carSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: false,
+      
     },
     is_paid: {
       type: Boolean,
       default: false,
+    },
+    organaization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organaization',
+      required: false,
+      default: null,
     },
   },
   {

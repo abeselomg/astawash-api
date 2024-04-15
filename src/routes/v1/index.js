@@ -2,11 +2,12 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const licenseRoute = require('./driverLicense.route');
-const carRoute= require('./car.route')
-const carSettingRoute= require('./carSetting.route')
-const reminderRoute= require('./reminder.route')
+const carRoute = require('./car.route');
+const carSettingRoute = require('./carSetting.route');
+const reminderRoute = require('./reminder.route');
 
-
+const organizationRoute = require('./organization.route');
+const organizationUserRoute = require('./organizationUser.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -30,14 +31,21 @@ const defaultRoutes = [
     route: carRoute,
   },
   {
-    path:'/car_setting',
-    route:carSettingRoute
+    path: '/car_setting',
+    route: carSettingRoute,
   },
   {
-    path:'/reminder',
-    route:reminderRoute
-  }
-  
+    path: '/organization',
+    route: organizationRoute,
+  },
+  {
+    path: '/organization_users',
+    route: organizationUserRoute,
+  },
+  {
+    path: '/reminder',
+    route: reminderRoute,
+  },
 ];
 
 const devRoutes = [

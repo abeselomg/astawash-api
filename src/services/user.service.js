@@ -8,10 +8,10 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isPhoneTaken(userBody.phone)) {
+  if (await User.isUsernameTaken(userBody.phone)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Phone already taken');
   }
-  return User.create(userBody);
+  return User.create({ ...userBody, username: userBody.phone || userBody.email });
 };
 
 /**
@@ -42,8 +42,8 @@ const getUserById = async (id) => {
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByPhone = async (phone) => {
-  return User.findOne({ phone });
+const getUserByPhone = async (username) => {
+  return User.findOne({ username }).populate(['organaization']);
 };
 
 /**
@@ -58,7 +58,7 @@ const updateUserById = async (userId, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  if (updateBody.phone && (await User.isPhoneTaken(updateBody.phone, userId))) {
+  if (updateBody.phone && (await User.isUsernameTaken(updateBody.phone, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Phone already taken');
   }
   Object.assign(user, updateBody);

@@ -16,6 +16,10 @@ router
   .route('/user/:userId')
   .get(auth('personal'), validate(licenceValidation.getDriverLicenseByUser), licenseController.getDriverLicenseByUserId);
 router
+  .route('/org/:orgId')
+  .get(auth('personal'), validate(licenceValidation.getDriverLicenseByOrg), licenseController.getDriverLicenseByOrgId);
+
+router
   .route('/:licenseId')
   .patch(auth('personal'), validate(licenceValidation.updateLicense), licenseController.updateLicense)
   .delete(auth('manageUsers'), validate(licenceValidation.deleteLicense), licenseController.deleteLicense);

@@ -28,6 +28,14 @@ const getCarsByUserId = catchAsync(async (req, res) => {
   res.send(cars);
 });
 
+const getCarsByOrgId = catchAsync(async (req, res) => {
+  const cars = await CarService.getCarByOrg(req.params.orgId);
+  if (!cars) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No Cars found under this Organization');
+  }
+  res.send(cars);
+});
+
 const updateCar = catchAsync(async (req, res) => {
   const car = await CarService.updateCarById(req.params.carId, req.body);
   res.send(car);
@@ -44,4 +52,5 @@ module.exports = {
   getCarsByUserId,
   updateCar,
   deleteCar,
+  getCarsByOrgId
 };

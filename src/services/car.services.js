@@ -2,13 +2,14 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable prettier/prettier */
 const httpStatus = require('http-status');
-const { Car } = require('../models');
+const { Car, DriverLicense } = require('../models');
 const userServices = require('./user.service');
 const carRegionServices = require('./carRegion.services');
 const CarCodeService = require('./carCode.services');
 const CarBrandService = require('./carBrand.services');
 
 const ApiError = require('../utils/ApiError');
+const OrganaizationUser = require('../models/organizationUser.model');
 
 /**
  * Create a car
@@ -56,6 +57,9 @@ const getcarById = async (id) => {
 const getCarByUser = async (userId) => {
   return Car.find({ user: userId }).populate(['user', 'region', 'code', 'car_brand']);
 };
+const getCarByOrg = async (orgId) => {
+  return Car.find({ organaization: orgId }).populate(['organaization', 'region', 'code', 'car_brand']);
+};
 
 /**
  * Update cars by id
@@ -76,15 +80,14 @@ const updateCarById = async (carId, updateBody) => {
   }
 
   if (updateBody.codeId) {
-    carCode = await CarCodeService.getCarCodeById(updateBody.codeId);;
+    carCode = await CarCodeService.getCarCodeById(updateBody.codeId);
   }
 
   if (updateBody.carBrandId) {
-    carBrand = await CarBrandService.getCarBrandById(updateBody.carBrandId);;
+    carBrand = await CarBrandService.getCarBrandById(updateBody.carBrandId);
   }
 
-
-  Object.assign(car, {...updateBody,region: carRegion, code: carCode, car_brand: carBrand});
+  Object.assign(car, { ...updateBody, region: carRegion, code: carCode, car_brand: carBrand });
   await car.save();
   return car;
 };
@@ -103,6 +106,75 @@ const deleteCarById = async (carId) => {
   return car;
 };
 
+const getLatestReminderServiceByOrg = async (orgId) => {
+  let allReminders = {};
+
+  allReminders['third_party_expiration_date'] = await Car.findOne(
+    { organaization: orgId },
+    'third_party_expiration_date'
+  ).sort({ third_party_expiration_date: -1 });
+  // ['third_party_expiration_date'];
+
+  allReminders['bolo_expiration_date'] = await Car.findOne({ organaization: orgId }, 'bolo_expiration_date').sort({
+    bolo_expiration_date: -1,
+  });
+  allReminders['full_insurance_expiration_date'] = await Car.findOne(
+    { organaization: orgId },
+    'full_insurance_expiration_date'
+  ).sort({ full_insurance_expiration_date: -1 });
+  allReminders['license_expiration_date'] = await DriverLicense.findOne({ organaization: orgId }, 'expiration_date').sort({
+    expiration_date: -1,
+  });
+
+  return allReminders;
+};
+
+const getDataCountByOrg = async (orgId) => {
+  let allReminders = {};
+
+  allReminders['cars'] = await Car.find({ organaization: orgId }).count();
+  allReminders['licenses'] = await DriverLicense.find({ organaization: orgId }).count();
+  allReminders['Drivers'] = await OrganaizationUser.find({ organaization: orgId }).count();
+
+  return allReminders;
+};
+
+const getThisWeekByOrg = async (organizationId) => {
+  let allReminders = {};
+  const startOfWeek = new Date();
+  startOfWeek.setHours(0, 0, 0, 0);
+  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+
+  const endOfWeek = new Date();
+  endOfWeek.setHours(23, 59, 59, 999);
+  endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
+
+  console.log(startOfWeek, endOfWeek);
+  allReminders['third_party'] = await Car.find({
+    organaization: organizationId,
+    third_party_expiration_date: {
+      $gte: startOfWeek,
+      $lte: endOfWeek,
+    },
+  }).populate(['car_brand', 'code', 'region']);
+  allReminders['bolo_expiration'] = await Car.find({
+    organaization: organizationId,
+    bolo_expiration_date: {
+      $gte: startOfWeek,
+      $lte: endOfWeek,
+    },
+  }).populate(['car_brand', 'code', 'region']);
+
+  allReminders['full_insurance'] = await Car.find({
+    organaization: organizationId,
+    full_insurance_expiration_date: {
+      $gte: startOfWeek,
+      $lte: endOfWeek,
+    },
+  }).populate(['car_brand', 'code', 'region']);
+  return allReminders;
+};
+
 module.exports = {
   createCar,
   queryAllCar,
@@ -110,4 +182,8 @@ module.exports = {
   getCarByUser,
   updateCarById,
   deleteCarById,
+  getCarByOrg,
+  getLatestReminderServiceByOrg,
+  getDataCountByOrg,
+  getThisWeekByOrg,
 };

@@ -28,7 +28,12 @@ const remindersSchema = mongoose.Schema(
       ref: 'User',
       required: true,
     },
-
+    organaization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organaization',
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,

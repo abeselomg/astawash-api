@@ -8,7 +8,10 @@ const createLicense = {
     license_years: Joi.number().required(),
     issue_date: Joi.date().max('now'),
     expiration_date: Joi.date().min('now'),
-    userId: Joi.string().required().custom(objectId),
+    userId: Joi.string().custom(objectId),
+    organaization: Joi.string().custom(objectId),
+    organaization_user: Joi.string().custom(objectId),
+
 
   }),
 };
@@ -28,10 +31,16 @@ const getLicense = {
 };
 
 const getDriverLicenseByUser = {
-    params: Joi.object().keys({
-      userId: Joi.string().custom(objectId),
-    }),
-  };
+  params: Joi.object().keys({
+    userId: Joi.string().custom(objectId),
+  }),
+};
+
+const getDriverLicenseByOrg = {
+  params: Joi.object().keys({
+    orgId: Joi.string().custom(objectId),
+  }),
+};
 
 const updateLicense = {
   params: Joi.object().keys({
@@ -39,10 +48,10 @@ const updateLicense = {
   }),
   body: Joi.object()
     .keys({
-        license_level: Joi.string(),
-        license_years: Joi.number(),
-        issue_date: Joi.date().max('now'),
-        expiration_date: Joi.date(),
+      license_level: Joi.string(),
+      license_years: Joi.number(),
+      issue_date: Joi.date().max('now'),
+      expiration_date: Joi.date(),
     })
     .min(1),
 };
@@ -60,4 +69,5 @@ module.exports = {
   getDriverLicenseByUser,
   updateLicense,
   deleteLicense,
+  getDriverLicenseByOrg
 };
