@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const organizationService = require('./organization.service');
 
 /**
  * Create a user
@@ -14,6 +15,14 @@ const createUser = async (userBody) => {
   return User.create({ ...userBody, username: userBody.phone || userBody.email });
 };
 
+const createOrgUser = async (userBody) => {
+  const org = await organizationService.getOrganizationById(userBody.organaization);
+  return User.create({
+    ...userBody,
+    username: userBody.phone || userBody.email,
+    organization: org,
+  });
+};
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -87,4 +96,5 @@ module.exports = {
   getUserByPhone,
   updateUserById,
   deleteUserById,
+  createOrgUser,
 };
